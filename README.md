@@ -18,6 +18,19 @@ yarn global add poker-odds
 npm install -g poker-odds
 ```
 
+### Card notation
+
+Cards are written as a rank followed by a suit letter:
+
+| Suit | Code |
+|------|------|
+| Spades | `s` |
+| Clubs | `c` |
+| Hearts | `h` |
+| Diamonds | `d` |
+
+For example, `As` is the Ace of Spades and `Td` is the Ten of Diamonds. Use `..` for an unknown card or `....` for an unknown hand.
+
 ### Usage
 
 ```bash
