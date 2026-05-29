@@ -8,7 +8,8 @@ import {
   seconds,
   getStraight,
   padStart,
-  padEnd
+  padEnd,
+  findDuplicateCards
 } from '../src/utils'
 
 test('numericalValue', t => {
@@ -80,4 +81,12 @@ test('padEnd', t => {
   t.is(padEnd('hello', 6), 'hello ')
   t.is(padEnd('hello', 5), 'hello')
   t.is(padEnd('hello', 3), 'hello')
+})
+
+test('findDuplicateCards', t => {
+  t.deepEqual(findDuplicateCards(['As', 'Ac', 'Kd', '7h']), [])
+  t.deepEqual(findDuplicateCards(['As', 'Ac', 'As']), ['As'])
+  t.deepEqual(findDuplicateCards(['As', 'Ac', 'As', 'Ac']), ['As', 'Ac'])
+  t.deepEqual(findDuplicateCards(['..', '..', 'As']), [])
+  t.deepEqual(findDuplicateCards([]), [])
 })
