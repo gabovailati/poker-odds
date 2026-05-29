@@ -54,6 +54,16 @@ export function parseCards (string) {
   return string.match(/[AKQJT2-9.][schd.]/g) || undefined
 }
 
+export function validateBoard (cards) {
+  if (!cards) {
+    return null
+  }
+  if (cards.length === 3 || cards.length === 4 || cards.length === 5) {
+    return null
+  }
+  return `Invalid board: expected 3 (flop), 4 (turn), or 5 (river) cards, got ${cards.length}`
+}
+
 export function percent (number) {
   if (number === 0) {
     return '·'
