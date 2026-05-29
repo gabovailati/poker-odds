@@ -4,6 +4,7 @@ import {
   numericalSort,
   convertToHex,
   parseCards,
+  findInvalidCards,
   percent,
   seconds,
   getStraight,
@@ -35,6 +36,14 @@ test('parseCards', t => {
   t.deepEqual(parseCards('....'), ['..', '..'])
   t.deepEqual(parseCards(''), undefined)
   t.deepEqual(parseCards('random string'), undefined)
+})
+
+test('findInvalidCards', t => {
+  t.deepEqual(findInvalidCards('Az3s6d'), ['Az'])
+  t.deepEqual(findInvalidCards('Az3z'), ['Az', '3z'])
+  t.deepEqual(findInvalidCards('Ts3s6d'), [])
+  t.deepEqual(findInvalidCards(''), [])
+  t.deepEqual(findInvalidCards(undefined), [])
 })
 
 test('percent', t => {

@@ -1,4 +1,5 @@
 const HAND_PATTERN = /^[AKQJT2-9.][schd.][AKQJT2-9.][schd.]$/
+const HAND_ATTEMPT_PATTERN = /^[AKQJT2-9][A-Za-z]([AKQJT2-9][A-Za-z])?$/
 const CONSOLE_COLORS = {
   black: '30',
   red: '31',
@@ -37,6 +38,17 @@ function colorCard (card) {
 
 export function getHands (argv = process.argv) {
   return argv.filter(string => HAND_PATTERN.test(string))
+}
+
+export function getInvalidHands (argv = process.argv) {
+  const consumed = new Set()
+  argv.forEach((s, i) => {
+    if (/^(-b|--board|-i|--iterations)$/.test(s)) consumed.add(i + 1)
+  })
+  return argv
+    .filter((_, i) => !consumed.has(i))
+    .filter(s => !s.startsWith('-') && !/^\d+$/.test(s))
+    .filter(s => HAND_ATTEMPT_PATTERN.test(s) && !HAND_PATTERN.test(s))
 }
 
 export function hasOption (option, argv = process.argv) {

@@ -54,6 +54,12 @@ export function parseCards (string) {
   return string.match(/[AKQJT2-9.][schd.]/g) || undefined
 }
 
+export function findInvalidCards (string) {
+  if (!string) return []
+  const candidates = string.match(/[AKQJT2-9][a-zA-Z]/g) || []
+  return candidates.filter(c => !/^[AKQJT2-9][schd]$/.test(c))
+}
+
 export function percent (number) {
   if (number === 0) {
     return '·'

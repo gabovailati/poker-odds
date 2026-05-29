@@ -3,6 +3,7 @@ import {
   color,
   colorCards,
   getHands,
+  getInvalidHands,
   hasOption,
   getOption
 } from '../src/console'
@@ -23,6 +24,31 @@ test('colorCards', t => {
 test('getHands', t => {
   const argv = ['node', 'script.js', 'AsAd', 'KdQd', '--iterations', '100']
   t.deepEqual(getHands(argv), ['AsAd', 'KdQd'])
+})
+
+test('getInvalidHands detects invalid suit', t => {
+  const argv = ['node', 'script.js', 'Az', 'KdQd']
+  t.deepEqual(getInvalidHands(argv), ['Az'])
+})
+
+test('getInvalidHands detects invalid hand', t => {
+  const argv = ['node', 'script.js', 'AsAz', 'KdQd']
+  t.deepEqual(getInvalidHands(argv), ['AsAz'])
+})
+
+test('getInvalidHands ignores valid hands', t => {
+  const argv = ['node', 'script.js', 'AsAd', 'KdQd']
+  t.deepEqual(getInvalidHands(argv), [])
+})
+
+test('getInvalidHands ignores board value', t => {
+  const argv = ['node', 'script.js', 'AsAd', '--board', 'Az3s6d']
+  t.deepEqual(getInvalidHands(argv), [])
+})
+
+test('getInvalidHands ignores option flags and numbers', t => {
+  const argv = ['node', 'script.js', 'AsAd', '--iterations', '1000', '--no-color']
+  t.deepEqual(getInvalidHands(argv), [])
 })
 
 test('hasOption', t => {

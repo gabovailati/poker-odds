@@ -2,8 +2,8 @@
 
 import { version } from '../../package.json'
 import { calculateEquity } from '../calculate'
-import { RANK_NAMES, parseCards, percent, seconds, padStart, padEnd } from '../utils'
-import { getHands, hasOption, getOption, color, colorCards } from '../console'
+import { RANK_NAMES, parseCards, findInvalidCards, percent, seconds, padStart, padEnd } from '../utils'
+import { getHands, getInvalidHands, hasOption, getOption, color, colorCards } from '../console'
 
 if (hasOption('--version')) {
   log()
@@ -31,6 +31,11 @@ if (hasOption('--help')) {
 }
 
 const hands = getHands()
+const invalidHands = getInvalidHands()
+
+if (invalidHands.length > 0) {
+  log(`warning: ignoring invalid hand(s): ${invalidHands.join(', ')}`, 'yellow')
+}
 
 if (hands.length === 0) {
   console.error('You must pass in at least one valid hand eg AsAc')
@@ -38,6 +43,11 @@ if (hands.length === 0) {
 }
 
 const board = getOption('--board')
+const invalidBoardCards = findInvalidCards(board)
+
+if (invalidBoardCards.length > 0) {
+  log(`warning: ignoring invalid board card(s): ${invalidBoardCards.join(', ')}`, 'yellow')
+}
 const iterations = getOption('--iterations')
 const exhaustive = hasOption('--exhaustive')
 const start = +new Date()
