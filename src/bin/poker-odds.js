@@ -2,7 +2,7 @@
 
 import { version } from '../../package.json'
 import { calculateEquity } from '../calculate'
-import { RANK_NAMES, parseCards, percent, seconds, padStart, padEnd } from '../utils'
+import { RANK_NAMES, parseCards, validateBoard, percent, seconds, padStart, padEnd } from '../utils'
 import { getHands, hasOption, getOption, color, colorCards } from '../console'
 
 if (hasOption('--version')) {
@@ -38,17 +38,25 @@ if (hands.length === 0) {
 }
 
 const board = getOption('--board')
+const boardCards = parseCards(board)
+const boardError = validateBoard(boardCards)
+
+if (boardError) {
+  console.error(boardError)
+  process.exit(1)
+}
+
 const iterations = getOption('--iterations')
 const exhaustive = hasOption('--exhaustive')
 const start = +new Date()
-const equity = calculateEquity(hands.map(parseCards), parseCards(board), iterations, exhaustive)
+const equity = calculateEquity(hands.map(parseCards), boardCards, iterations, exhaustive)
 const end = +new Date()
 
 log()
 
-if (board) {
+if (boardCards) {
   log('board', 'grey')
-  log(colorCards(parseCards(board)))
+  log(colorCards(boardCards))
   log()
 }
 const hasTie = equity.filter(hand => hand.ties).length !== 0

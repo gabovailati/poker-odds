@@ -4,6 +4,7 @@ import {
   numericalSort,
   convertToHex,
   parseCards,
+  validateBoard,
   percent,
   seconds,
   getStraight,
@@ -80,4 +81,32 @@ test('padEnd', t => {
   t.is(padEnd('hello', 6), 'hello ')
   t.is(padEnd('hello', 5), 'hello')
   t.is(padEnd('hello', 3), 'hello')
+})
+
+test('validateBoard accepts undefined', t => {
+  t.is(validateBoard(undefined), null)
+})
+
+test('validateBoard accepts 3 cards (flop)', t => {
+  t.is(validateBoard(['Ts', '3s', '6d']), null)
+})
+
+test('validateBoard accepts 4 cards (turn)', t => {
+  t.is(validateBoard(['Ts', '3s', '6d', 'Kh']), null)
+})
+
+test('validateBoard accepts 5 cards (river)', t => {
+  t.is(validateBoard(['Ts', '3s', '6d', 'Kh', '2c']), null)
+})
+
+test('validateBoard rejects 1 card', t => {
+  t.is(validateBoard(['Ts']), 'Invalid board: expected 3 (flop), 4 (turn), or 5 (river) cards, got 1')
+})
+
+test('validateBoard rejects 2 cards', t => {
+  t.is(validateBoard(['Ts', '3s']), 'Invalid board: expected 3 (flop), 4 (turn), or 5 (river) cards, got 2')
+})
+
+test('validateBoard rejects 6 cards', t => {
+  t.is(validateBoard(['Ts', '3s', '6d', 'Kh', '2c', 'As']), 'Invalid board: expected 3 (flop), 4 (turn), or 5 (river) cards, got 6')
 })
