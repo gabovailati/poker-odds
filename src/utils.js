@@ -106,6 +106,20 @@ export function padEnd (string, length, padString = ' ') {
   return string + padString.repeat(length - string.length)
 }
 
+export function findDuplicateCards (cards) {
+  const seen = new Set()
+  const duplicates = []
+  for (const card of cards) {
+    if (card === '..') continue
+    if (seen.has(card)) {
+      if (!duplicates.includes(card)) duplicates.push(card)
+    } else {
+      seen.add(card)
+    }
+  }
+  return duplicates
+}
+
 function round (number, dp = 1) {
   const multiplier = dp * 10
   return (Math.round(number * multiplier) / multiplier).toFixed(dp)

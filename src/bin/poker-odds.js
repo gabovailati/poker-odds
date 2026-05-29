@@ -2,7 +2,7 @@
 
 import { version } from '../../package.json'
 import { calculateEquity } from '../calculate'
-import { RANK_NAMES, parseCards, validateBoard, percent, seconds, padStart, padEnd } from '../utils'
+import { RANK_NAMES, parseCards, validateBoard, percent, seconds, padStart, padEnd, findDuplicateCards } from '../utils'
 import { getHands, hasOption, getOption, color, colorCards } from '../console'
 
 if (hasOption('--version')) {
@@ -43,6 +43,13 @@ const boardError = validateBoard(boardCards)
 
 if (boardError) {
   console.error(boardError)
+  process.exit(1)
+}
+
+const allCards = [...hands.flatMap(h => parseCards(h) || []), ...(boardCards || [])]
+const duplicates = findDuplicateCards(allCards)
+if (duplicates.length > 0) {
+  console.error(`Duplicate card(s) detected: ${duplicates.join(', ')}`)
   process.exit(1)
 }
 
